@@ -9,7 +9,7 @@ let PostSchema = mongoose.Schema(
         attachment: { type: String },
         authorid: { type: String, required: true },
         isActive: { type: Boolean, default: false },
-        createAt: { type: Date, default: Data.now }
+        createAt: { type: Date, default: Date.now }
     },
     { timestamp: true }
 );
