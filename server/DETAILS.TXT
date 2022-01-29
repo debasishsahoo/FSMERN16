@@ -1,0 +1,108 @@
+const express = require('express');
+const os = require('os');
+const app = express();
+const PORT = 7000;
+
+
+//Database Connect()
+
+app.get('/', (req, res) => {
+    res.send('Server is OK');
+});
+
+//Express IP
+//Loacl IP: http://:::7000
+//local IP:http ://127.0.0.1:7000  
+//local IP:localhost:7000
+
+//Default React PORT (default)
+//127.0.0.1:3000
+
+//User Management
+//1.Student
+//2.Teacher
+//admin(ROLE):TRUE OR FALSE
+
+//USER SCHEMA
+//USER ID(EMAIL)
+//USER PASSWORD(HASED)
+//USER NAME
+//OTHER DETAILS
+//USER TYPE
+//IS_ADMIN 
+
+
+//METHOD() 
+//CREATE()--SIGNUP
+//AUTH() --SIGNIN
+//NOAUTH ---SINOUT()
+//PROFILE --CREATE
+//PROFILE-EDIT
+//PROFILE-DELETE
+
+
+//AUTH CHECK   ----- TRUE OR FALSE
+//AUTH-GUARD -----
+
+
+
+//Post Management
+
+// POST SCHEMA
+//0.ID
+//1.TITLE
+//2.DESCRIPTION
+//3.DATE 
+//4.FILE   
+//5.USER ID
+//6.TAG
+
+//METHODS
+//CREATE() //  CLIENT---- DATA OUTGOING-----> SERVER--  POST()
+
+//VIEW-ALL()//  CLIENT <------DATA INCOMMING--------------- SERVER ---GET()
+
+//VIEW-SINGLE()//CLIENT <------DATA INCOMMING--------------- SERVER --GET()
+
+//VIEW-USERPOST-LIST()//CLIENT <------DATA INCOMMING--------------- SERVER --GET()
+
+//DELETE()//CLIENT <------DATA INCOMMING--------------- SERVER --DELETE()
+
+//EDIT() //  CLIENT---- DATA OUTGOING-----> SERVER--  PUT() OR PATCH()
+
+
+//IN ID=6 CHANGE THE NAME:FROM ABC1 TO ABC6  --PATCH()
+
+// IN ID=9 CHANGE THE SALARY:20 TO AGE:20 --- PUT()
+
+/**
+ * {ID:1,NAME:ABC1,AGE:30}
+ * {ID:2,NAME:ABC2,AGE:35}
+ * {ID:3,NAME:ABC3,AGE:10}
+ * {ID:4,NAME:ABC4,AGE:23}
+ * {ID:5,NAME:ABC5,AGE:40}
+ * {ID:6,NAME:ABC1,AGE:70}*
+ * {ID:7,NAME:ABC7,AGE:80}
+ * {ID:8,NAME:ABC8,AGE:50}
+ * {ID:9,NAME:ABC9,SALARY:20}*
+ * {ID:10,NAME:ABC10,AGE:30}
+ */
+
+
+//ROUTER
+
+
+
+
+
+
+//app.listen(PORT, () => { console.log(`app is listening to PORT ${PORT}`); })
+let server = app.listen(PORT, () => {
+    let host = server.address().address;
+    let port = server.address().port;
+    console.log('app is listening at http://%s:%s', host, port);
+    console.log("Server Info:")
+    console.log(os.networkInterfaces())
+    console.log(os.arch())
+    console.log(os.cpus())
+})
