@@ -26,7 +26,7 @@ const UserCTRL = {
     signup: async (req, res, next) => {
         const { name, email, password, mobile } = req.body
         try {
-            const oldUser = await UserModel.findOne(email);
+            const oldUser = await UserModel.findOne({ email });
             if (oldUser) {
                 return res.status(400).json({
                     message: "Email already Exists",
@@ -53,7 +53,7 @@ const UserCTRL = {
     signin: async (req, res, next) => {
         const { email, password } = req.body;
         try {
-            const oldUser = await UserModel.findOne(email);
+            const oldUser = await UserModel.findOne({ email });
             if (!oldUser) {
                 return res.status(400).json({
                     message: "user Dose Not Exist",
@@ -68,7 +68,7 @@ const UserCTRL = {
             const token = jwt.sign(
                 {
                     email: oldUser.email,
-                    id: oldUser.id,
+                    id: oldUser._id,
                 },
                 Encode_Key,
                 { expiresIn: TimeOut }
@@ -147,7 +147,7 @@ const UserCTRL = {
     },
     blockUser: async (req, res, next) => {
         const { id } = req.params;
-        const { isActive } = req.body;
+        let { isActive } = req.body;
         try {
             if (!mongoose.Types.ObjectId.isValid(id)) {
                 return res.status(404).json({

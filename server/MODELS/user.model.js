@@ -5,12 +5,12 @@ let UserSchema = mongoose.Schema(
         id: { type: String },
         name: { type: String, required: true },
         email: { type: String, required: true },
-        mobile: { type: String, required: true },
-        image: { type: String, required: true },
+        mobile: { type: String },
+        image: { type: String },
         password: { type: String, required: true },
         isAdmin: { type: Boolean, default: false },
-        isActive: { type: Boolean, default: false },
-        joinAt: { type: Date, default: Data.now }
+        isActive: { type: Boolean, default: true },
+        joinAt: { type: Date, default: Date.now }
     },
     { timestamp: true }
 );

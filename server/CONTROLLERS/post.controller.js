@@ -99,7 +99,7 @@ const PostCTRL = {
     },
     blockPost: async (req, res, next) => {
         const { id } = req.params;
-        const { isActive } = req.body;
+        let { isActive } = req.body;
         try {
             if (!mongoose.Types.ObjectId.isValid(id)) {
                 return res.status(404).json({

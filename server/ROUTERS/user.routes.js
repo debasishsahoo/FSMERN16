@@ -4,9 +4,9 @@ const UserCTRL = require('../CONTROLLERS/user.controller')
 //User Control
 router.post('/signup', UserCTRL.signup);
 router.post('/signin', UserCTRL.signin);
-router.get('/profile/:id', UserCTRL.profileView);
-router.put('/profile/:id', UserCTRL.profileEdit);
-router.delete('/profile/:id', UserCTRL.profileDelete);
+router.get('/:id', UserCTRL.profileView);
+router.put('/:id', UserCTRL.profileEdit);
+router.delete('/:id', UserCTRL.profileDelete);
 
 
 module.exports = router
