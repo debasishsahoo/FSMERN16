@@ -6,6 +6,7 @@ const dotenv = require('dotenv')
 dotenv.config()
 const Encode_Key = `${process.env.SECRET_KEY}`
 const Hash_Key = parseInt(`${process.env.HASH_KEY}`)
+const TimeOut = parseInt(`${process.env.EXPIRESIN}`)
 
 
 const UserCTRL = {
@@ -35,10 +36,43 @@ const UserCTRL = {
                 message: error.message,
             })
         }
-
     },
     signin: async (req, res, next) => {
-        res.send('Calling from Signin')
+        const { email, password } = req.body;
+        try {
+            const oldUser = await UserModel.findOne(email);
+            if (!oldUser) {
+                return res.status(400).json({
+                    message: "user Dose Not Exist",
+                });
+            }
+            const isPassWordCorrect = await bcrypt.compare(password, oldUser.password)
+            if (!isPassWordCorrect) {
+                return res.status(400).json({
+                    message: "Invalide Password",
+                });
+            }
+            const token = jwt.sign(
+                {
+                    email: oldUser.email,
+                    id: oldUser.id,
+                },
+                Encode_Key,
+                { expiresIn: TimeOut }
+            );
+            res.status(200).json({
+                message: "Sucessfully Login",
+                user: oldUser,
+                token: token
+            })
+        }
+        catch (error) {
+            res.status(500).json({
+                message: "Something Went Wrong"
+            })
+        }
+
+
     },
     profileCreate: async (req, res, next) => {
         const { id } = req.params
