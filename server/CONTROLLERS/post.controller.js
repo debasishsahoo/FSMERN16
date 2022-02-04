@@ -1,5 +1,5 @@
-const mongoose = require('mongoose');
 const PostModel = require('../MODELS/post.model')
+const CommonHelper = require('../HELPER/Common.Helper')
 const PostCTRL = {
     allPost: async (req, res, next) => {
         try {
@@ -35,6 +35,11 @@ const PostCTRL = {
     singlePost: async (req, res, next) => {
         const { id } = req.params
         try {
+            if (!CommonHelper.validId(id)) {
+                return res.status(404).json({
+                    message: `No Post with id:${id}`,
+                })
+            }
             const SinglePost = await PostModel.findById(id);
             res.status(200).json({
                 message: `Post of this ${id} Found`,
@@ -55,7 +60,7 @@ const PostCTRL = {
         const { id } = req.params;
         const { title, body, image } = req.body;
         try {
-            if (!mongoose.Types.ObjectId.isValid(id)) {
+            if (!CommonHelper.validId(id)) {
                 return res.status(404).json({
                     message: `No Post with id:${id}`,
                 })
@@ -80,7 +85,7 @@ const PostCTRL = {
     postDelete: async (req, res, next) => {
         const { id } = req.params;
         try {
-            if (!mongoose.Types.ObjectId.isValid(id)) {
+            if (!CommonHelper.validId(id)) {
                 return res.status(404).json({
                     message: `No Post with id:${id}`,
                 })
@@ -101,7 +106,7 @@ const PostCTRL = {
         const { id } = req.params;
         let { isActive } = req.body;
         try {
-            if (!mongoose.Types.ObjectId.isValid(id)) {
+            if (!CommonHelper.validId(id)) {
                 return res.status(404).json({
                     message: `No Post with id:${id}`,
                 })
