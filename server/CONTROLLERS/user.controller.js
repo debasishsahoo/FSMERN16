@@ -84,7 +84,7 @@ const UserCTRL = {
         const { id } = req.params
         const { name, mobile, image } = req.body
         try {
-            if (!CommonHelepr.validId(id)) {
+            if (!CommonHelepr.validId(id) && !CommonHelepr.IdExist({ _id: id })) {
                 return res.status(404).json({
                     message: `No User with id:${id}`,
                 })
