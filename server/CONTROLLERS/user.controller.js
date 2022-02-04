@@ -1,7 +1,8 @@
 const UserModel = require('../models/user.model')
-const mongoose = require('mongoose')
+
 const HashHelper = require('../HELPER/Hash.Helper')
 const JwtHelper = require('../HELPER/Jwt.Helper')
+const CommonHelepr = require('../HELPER/Common.Helper')
 
 
 const UserCTRL = {
@@ -21,7 +22,7 @@ const UserCTRL = {
     signup: async (req, res, next) => {
         const { name, email, password, mobile } = req.body
         try {
-            const oldUser = await UserModel.findOne({ email });
+            const oldUser = await CommonHelepr.ValidUser({ email })
             if (oldUser) {
                 return res.status(400).json({
                     message: "Email already Exists",
@@ -48,7 +49,7 @@ const UserCTRL = {
     signin: async (req, res, next) => {
         const { email, password } = req.body;
         try {
-            const oldUser = await UserModel.findOne({ email });
+            const oldUser = await CommonHelepr.ValidUser({ email });
             if (!oldUser) {
                 return res.status(400).json({
                     message: "user Dose Not Exist",
@@ -84,7 +85,7 @@ const UserCTRL = {
         const { id } = req.params
         const { name, mobile, image } = req.body
         try {
-            if (!mongoose.Types.ObjectId.isValid(id)) {
+            if (!CommonHelepr.validId(id)) {
                 return res.status(404).json({
                     message: `No User with id:${id}`,
                 })
@@ -107,7 +108,7 @@ const UserCTRL = {
     profileDelete: async (req, res, next) => {
         const { id } = req.params;
         try {
-            if (!mongoose.Types.ObjectId.isValid(id)) {
+            if (!CommonHelepr.validId(id)) {
                 return res.status(404).json({
                     message: `No User with id:${id}`,
                 })
@@ -127,6 +128,11 @@ const UserCTRL = {
     profileView: async (req, res, next) => {
         const { id } = req.params
         try {
+            if (!CommonHelepr.validId(id)) {
+                return res.status(404).json({
+                    message: `No User with id:${id}`,
+                })
+            }
             const SingleUser = await UserModel.findById(id);
             res.status(200).json({
                 message: `User of this ${id} Found`,
@@ -142,7 +148,7 @@ const UserCTRL = {
         const { id } = req.params;
         let { isActive } = req.body;
         try {
-            if (!mongoose.Types.ObjectId.isValid(id)) {
+            if (!CommonHelepr.validId(id)) {
                 return res.status(404).json({
                     message: `No User with id:${id}`,
                 })
