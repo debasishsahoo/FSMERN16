@@ -1,12 +1,7 @@
 const UserModel = require('../models/user.model')
 const mongoose = require('mongoose')
-const bcrypt = require('bcrypt')
-const jwt = require('jsonwebtoken')
-const dotenv = require('dotenv')
-dotenv.config()
-const Encode_Key = `${process.env.SECRET_KEY}`
-const Hash_Key = parseInt(`${process.env.HASH_KEY}`)
-const TimeOut = parseInt(`${process.env.EXPIRESIN}`)
+const HashHelper = require('../HELPER/Hash.Helper')
+const JwtHelper = require('../HELPER/Jwt.Helper')
 
 
 const UserCTRL = {
@@ -32,7 +27,7 @@ const UserCTRL = {
                     message: "Email already Exists",
                 });
             }
-            const HasedPassword = await bcrypt.hash(password, Hash_Key)
+            const HasedPassword = await HashHelper.HasedPassword(password);
             const SendData = await UserModel.create({
                 name,
                 email,
@@ -59,19 +54,17 @@ const UserCTRL = {
                     message: "user Dose Not Exist",
                 });
             }
-            const isPassWordCorrect = await bcrypt.compare(password, oldUser.password)
+            const isPassWordCorrect = await HashHelper.isPasswordCorrect(password, oldUser.password)
             if (!isPassWordCorrect) {
                 return res.status(400).json({
                     message: "Invalide Password",
                 });
             }
-            const token = jwt.sign(
+            const token = JwtHelper.SigninToken(
                 {
                     email: oldUser.email,
                     id: oldUser._id,
-                },
-                Encode_Key,
-                { expiresIn: TimeOut }
+                }
             );
             res.status(200).json({
                 message: "Sucessfully Login",
